@@ -24,7 +24,7 @@ public:
 template <typename T, int M, int N>
 class Mat {
 public:
-    T data[N*M];
+    
 
     Mat();
     Mat(const T* list);
@@ -55,11 +55,19 @@ public:
     T MVal() const;
 
     Mat<T, M, N> normalized() const;
+private:
+    T data[N*M];
+    bool isVec;
 };
 
 
 template <typename T, int M, int N>
 Mat<T, M, N>::Mat() {
+    if(M == 1 || N == 1){
+        isVec = true;
+    }else{
+        isVec = false;
+    }
     for (int i = 0; i < M*N; i++){
         data[i] = T(0);
     }
@@ -67,6 +75,11 @@ Mat<T, M, N>::Mat() {
 
 template <typename T, int M, int N>
 Mat<T, M, N>::Mat(const T* list) {
+    if(M == 1 || N == 1){
+        isVec = true;
+    }else{
+        isVec = false;
+    }
     for (int i = 0; i < M*N; i++){
         data[i] = list[i];
     }
@@ -166,6 +179,11 @@ Mat<T, M, P> Mat<T, M, N>::operator*(const Mat<T, N, P>& other) const {
             }
             results.data[P*w + j] = val;
         }
+    }
+    if(M == 1 || P == 1){
+        isVec = true;
+    }else{
+        isVec = false;
     }
     return results;
 }
